@@ -219,9 +219,12 @@ bool BitmapClass::UpdateBuffers(ID3D11DeviceContext* deviceContext, int position
 		return false;
 	}
 
-	float w_ratio = (float)width / (float)m_screenWidth;
+
+	//float w_ratio = (float)width / (float)m_screenWidth;
 	//float h_ratio = (float)height / (float)m_screenHeight;
-	float h_ratio = 830.0f / 1024.0f;
+	//float h_ratio = 830.0f / 1024.0f;
+	float w_ratio = (float)width / (float)m_bitmapWidth;
+	float h_ratio = (float)height / (float)m_bitmapHeight;
 
 	// 정점 배열에 데이터를로드합니다.
 	// 첫 번째 삼각형

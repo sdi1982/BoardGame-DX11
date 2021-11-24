@@ -20,7 +20,7 @@ TextureShaderClass::~TextureShaderClass()
 bool TextureShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	// 정점 및 픽셀 쉐이더를 초기화합니다.
-	return InitializeShader(device, hwnd, L"../Dx11Demo_11/texture.vs", L"../Dx11Demo_11/texture.ps");
+	return InitializeShader(device, hwnd, L"./texture.vs", L"./texture.ps");
 }
 
 

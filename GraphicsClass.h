@@ -33,4 +33,5 @@ private:
 	CameraClass* m_Camera = nullptr;
 	TextureShaderClass* m_TextureShader = nullptr;
 	BitmapClass* m_Bitmap = nullptr;
+	BitmapClass* m_BitPlayer = nullptr;
 };

@@ -69,7 +69,21 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// 비트맵 객체 초기화
-	if(!m_Bitmap->Initialize(m_Direct3D->GetDevice(), screenWidth, screenHeight, L"../Dx11Demo_11/data/board.dds", 1024, 1024))
+	if(!m_Bitmap->Initialize(m_Direct3D->GetDevice(), screenWidth, screenHeight, L"./data/board.dds", 1024, 1024))
+	{
+		MessageBox(hwnd, L"Could not initialize the bitmap object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// 비트맵 객체 생성
+	m_BitPlayer = new BitmapClass;
+	if (!m_BitPlayer)
+	{
+		return false;
+	}
+
+	// 비트맵 객체 초기화
+	if (!m_BitPlayer->Initialize(m_Direct3D->GetDevice(), screenWidth, screenHeight, L"./data/player1_choi.dds", 256, 256))
 	{
 		MessageBox(hwnd, L"Could not initialize the bitmap object.", L"Error", MB_OK);
 		return false;
@@ -87,6 +101,14 @@ void GraphicsClass::Shutdown()
 		m_Bitmap->Shutdown();
 		delete m_Bitmap;
 		m_Bitmap = 0;
+	}
+
+	// m_Bitmap 객체 반환
+	if (m_BitPlayer)
+	{
+		m_BitPlayer->Shutdown();
+		delete m_BitPlayer;
+		m_BitPlayer = 0;
 	}
 
 	// m_TextureShader 객체 반환
@@ -157,6 +179,18 @@ bool GraphicsClass::Render(float rotation)
 
 	// 텍스처 쉐이더로 비트 맵을 렌더링합니다.	
 	if(!m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Bitmap->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, m_Bitmap->GetTexture()))
+	{
+		return false;
+	}
+
+	// 비트 맵 버텍스와 인덱스 버퍼를 그래픽 파이프 라인에 배치하여 그리기를 준비합니다.
+	if (!m_BitPlayer->Render(m_Direct3D->GetDeviceContext(), 0, 0, 130, 200))
+	{
+		return false;
+	}
+
+	// 텍스처 쉐이더로 비트 맵을 렌더링합니다.	
+	if (!m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_BitPlayer->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, m_BitPlayer->GetTexture()))
 	{
 		return false;
 	}
